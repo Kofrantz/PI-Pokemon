@@ -1,0 +1,10 @@
+.circleShadow2{
+    position:absolute;
+    left:0;
+    bottom: 10px;
+    width: 200px;
+    height: 75px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.281);
+    z-index: -1;
+}

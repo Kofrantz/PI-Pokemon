@@ -1,0 +1,41 @@
+.cards{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+a{
+    text-decoration: none;
+    color: black;
+}
+.card{
+    background-color: rgb(200, 200, 200);
+    border-radius: 15px;
+    margin: 20px;
+    width: 200px;
+    font-size: 18px;
+    text-align: center;
+}
+.cardImg{
+    width: 100%;
+}
+.name{
+    font-size: 24px;
+    font-weight: bold;
+}
+.pages{
+    display: flex;
+    justify-content: center;
+    font-size: 24px;
+}
+.types{
+    display: flex;
+    justify-content: space-evenly;
+}
+.types p{
+    margin: 5px;
+    margin-top: 0;
+}
+.typeImg{
+    width: 50px;
+    height: 50px;
+}

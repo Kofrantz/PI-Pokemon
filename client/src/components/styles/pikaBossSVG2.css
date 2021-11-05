@@ -1,0 +1,55 @@
+#pikaBossSvg2{
+    position: fixed;
+    right: 0;
+    width: 150px;
+    filter: url(#white-glow);
+    transition: all 0.5s cubic-bezier(.41,.65,.84,1.4);
+}
+#circleShadow{
+    content: "";
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.383);
+    border-radius: 50%;
+    width: 80px;
+    height: 25px;
+    right: 0;
+    margin: 0;
+    transition: all 0.5s cubic-bezier(.41,.65,.84,1.4);
+}
+.aboutInv{
+    position: fixed;
+}
+#dialog{
+    position: fixed;
+    right: 150px;
+    background-color: white;
+    color: black;
+    border-radius: 15px;
+    padding: 10px;
+    transition: all 0.5s cubic-bezier(.41,.65,.84,1.4);
+}
+.dialogBtns{
+    display: flex;
+    justify-content: center;
+}
+.dialogBtn{
+    border-radius: 5px;
+    width: 30%;
+    background-color:blue;
+    color:white;
+    border: none;
+    margin: 0 15px;
+    padding: 5px;
+}
+.dialogBtn:hover{
+    background-color:rgb(59, 59, 255);
+}
+#dialog::before{
+    content: "";
+    border: 50px solid white;
+    position: fixed;
+    right: 125px;
+    border-color: white transparent transparent transparent;
+    z-index: -1;
+    transition: all 0.5s cubic-bezier(.41,.65,.84,1.4);
+}

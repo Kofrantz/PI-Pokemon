@@ -1,0 +1,12 @@
+-Hacer tests
+-Filtro my pokemons
+-About me
+-no se repita la invitacion a aboutme
+-terminar landing page
+-terminar ruta de creacion
+-animacion de creacion (opcional)
+-terminar home
+-terminar ruta de detalles
+-cambiar pantalla de carga
+-not found
+-PUSHEAR ALGO

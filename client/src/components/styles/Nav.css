@@ -1,0 +1,59 @@
+
+.nav{
+    background-color: #1d1d1d;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: flex-end;
+    height: 70px;
+}
+.searchBar{
+    display: flex;
+    align-items: center;
+}
+.searchBar input{
+    margin: 0 5px;
+    color: #fff;
+    background-color: transparent;
+    border-style: solid;
+    border-width: 0 0 3px 0;
+    outline: none;
+}
+.searchBar input::placeholder{
+    color: #fff;
+}
+
+.titleHome{
+    display: flex;
+    flex-direction: row;
+    justify-content:flex-start;
+    align-content: flex-end;
+}
+.titleH{
+    color: white;
+    text-decoration: none;
+    margin-top: 10px;
+    font-size: 36px;
+    padding: 0;
+    font-weight: bold;
+}
+.pikaBossSvg{
+    height: 100%;
+    width: 60px;
+    filter: url(#white-glow);
+}
+.create{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    font-size: 24px;
+}
+.createBtn{
+    width: 250px;
+    font-size: 24px;
+    border-radius: 5px;
+    background-color:blue;
+    color:white;
+    border: none;
+}
