@@ -1,24 +1,10 @@
-import { render, screen, cleanup, fireEvent } from '@testing-library/react';
+import { render, cleanup, fireEvent } from '@testing-library/react';
 import React from 'react';
-import { Router, BrowserRouter } from 'react-router-dom';
+import { Router } from 'react-router-dom';
 import App from './App.js';
 import {createMemoryHistory} from 'history';
-import Home from './components/Home.jsx'
-import Creation from './components/Creation.jsx'
-import About from './components/About.jsx'
-import LandingPage from './components/LandingPage.jsx'
-
-/* test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
-}); */
-
-//beforeEach(() => render(<BrowserRouter><Nav /></BrowserRouter>))
-
 import rootReducer from './reducer/reducer.js'
-import { connect, Provider } from 'react-redux'
-import configureStore from 'redux-mock-store'
+import { Provider } from 'react-redux'
 import { createStore } from 'redux';
 
 afterEach(cleanup)
