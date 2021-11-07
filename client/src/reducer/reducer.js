@@ -6,15 +6,19 @@ import {GET_DETAILS,
     CHANGE_PAGE, 
     CHANGE_FILTER, 
     CHANGE_ORDER,
-    CREATE_POKEMON} from "./actions"
+    CREATE_POKEMON,
+    ABOUT_MSG,
+    MENU} from "./actions"
 
 const initialState = {
     pokemons: [],
     details: {},
     types: [],
     page: 1,
-    filters: {typeFilter: []},
+    filters: {typeFilter: [], originFilter: 'All'},
     order: 'A - Z',
+    aboutMsg: true, 
+    menu: false
 }
 
 function rootReducer(state=initialState, action){
@@ -65,7 +69,16 @@ function rootReducer(state=initialState, action){
                 ...state, 
                 pokemons: [...state.pokemons, action.payload]
             }
-        
+        case ABOUT_MSG:
+            return {
+                ...state, 
+                aboutMsg: false
+            }
+        case MENU:
+            return {
+                ...state, 
+                menu: !state.menu
+            }
         default:
             return state
     }

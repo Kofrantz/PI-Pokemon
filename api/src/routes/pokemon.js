@@ -34,7 +34,7 @@ router.get('/', async (req, res) => {
         })
         .then((r) => {
             pokeDataApi = r?.map(p => p.data)
-            res.status(200).json(pokeDataApi.concat(pokeDataDB).map(p => cleanPokeInfo(p)))
+            return res.status(200).json(pokeDataApi.concat(pokeDataDB).map(p => cleanPokeInfo(p)))
         })
         .catch((err) => {
             res.send(err.message)
@@ -75,6 +75,7 @@ router.post('/', async (req, res) => {
             delete resPoke.createdAt
             delete resPoke.updatedAt
             resPoke.types = data.map(p => p.dataValues.name)
+            resPoke.origin = 'My'
             return res.status(200).json(resPoke)
         })
     }catch(err){
@@ -104,7 +105,8 @@ function cleanPokeInfo(p){
         defense: p.defense || stats.find(s => s.name === 'defense').val,
         speed: p.speed || stats.find(s => s.name === 'speed').val,
         weight: p.weight,
-        height: p.height
+        height: p.height,
+        origin: !stats ? 'My' : 'Original'
     }
 }
 

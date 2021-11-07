@@ -15,7 +15,6 @@ router.get('/', async (req, res, next) => {
             return res.status(200).send(r)
         })
     } else {
-        console.log('here')
         const namesTypes = types.map(t => t.name)
         return res.status(200).send(namesTypes)
     }

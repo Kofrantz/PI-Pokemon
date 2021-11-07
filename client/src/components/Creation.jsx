@@ -44,7 +44,7 @@ export default function Creation (){
             speed: parseInt(speed), 
             height: parseInt(height), 
             weight: parseInt(weight),
-            types: typeState
+            types: typeState,
         }
         dispatch(createPokemon(newPoke, history))
     }
@@ -68,33 +68,63 @@ export default function Creation (){
         }
         setInput({...input, image: e.target.files[0]})
     }
-
+    
     return (
         <div className='creation'>
-            <form onSubmit={handleSubmit} className='creationForm'>
-                <img src={preview}/>
-                <input type='file' id='image' className='input' onChange={onSelectFile}/>
-                <input value={input.name} id='name' className='input' type='text' placeholder='Nombre' onChange={handleChange} autocomplete='on'/>
-                
-                {typeState.map(t => <button type="button" value={t} onClick={handleTypesChange}>{t}</button>)}
-                <label for='Tipo'>Elegir tipos </label>
-                <select name='Tipo' value={'-Tipo-'} onChange={handleTypesChange}>
-                    <option value='-Tipo-' disabled>-Tipo-</option>
-                    {types.map(t => !typeState.find(x => x === t) ? <option value={t}>{t}</option> : null)}
-                </select>
-                <input value={input.attack} id='attack' className='input' type='text' placeholder='Ataque' onChange={handleChange} autocomplete='on'/>
-                <input value={input.defense} id='defense' className='input' type='text' placeholder='Defensa' onChange={handleChange} autocomplete='on'/>
-                <input value={input.speed} id='speed' className='input' type='text' placeholder='Velocidad' onChange={handleChange} autocomplete='on'/>
-                <input value={input.hp} id='hp' className='input' type='text' placeholder='HP' onChange={handleChange} autocomplete='on'/>
-                <input value={input.height} id='height' className='input' type='text' placeholder='Altura' onChange={handleChange} autocomplete='on'/>
-                <input value={input.weight} id='weight' className='input' type='text' placeholder='Peso' onChange={handleChange} autocomplete='on'/>
-                <button type='submit' className='input'>Create</button>
-            </form>
             <button onClick={() => {history.goBack()}}>Volver</button>
+            <form onSubmit={handleSubmit} className='creationForm'>
+                <div className='inputImg'>
+                    <h2>Apariencia</h2>
+                    {preview ? <img src={preview}/> : <div className='uploadimg'><p>No hay imagen</p></div>}
+                    <input type='file' id='image' onChange={onSelectFile}/>                    
+                </div>
+
+                <div className='skillsAndTypes'>
+                    <div className='inputSkills'>
+                        <h2>Habilidades</h2>
+                        <input value={input.name} id='name' className='input' type='text' placeholder='Nombre' onChange={handleChange} autocomplete='on'/>
+                        <input value={input.attack} id='attack' className='input' type='text' placeholder='Ataque' onChange={handleChange} autocomplete='on'/>
+                        <input value={input.defense} id='defense' className='input' type='text' placeholder='Defensa' onChange={handleChange} autocomplete='on'/>
+                        <input value={input.speed} id='speed' className='input' type='text' placeholder='Velocidad' onChange={handleChange} autocomplete='on'/>
+                        <input value={input.hp} id='hp' className='input' type='text' placeholder='HP' onChange={handleChange} autocomplete='on'/>
+                        <input value={input.height} id='height' className='input' type='text' placeholder='Altura' onChange={handleChange} autocomplete='on'/>
+                        <input value={input.weight} id='weight' className='input' type='text' placeholder='Peso' onChange={handleChange} autocomplete='on'/>
+                    </div>
+                    <div className='inputTypes'>
+                        <h2>Tipo</h2>
+                        <label for='Tipo'>Elegir tipos </label>
+                        <select name='Tipo' value={'-Tipo-'} onChange={handleTypesChange}>
+                            <option value='-Tipo-' disabled>-Tipo-</option>
+                            {types.map(t => !typeState.find(x => x === t) ? <option value={t}>{t}</option> : null)}
+                        </select>
+                        <div className='typesSelGroup'>
+                        {typeState.map(t => 
+                            <div className='typeSel'>
+                                <button type="button" value={t} onClick={handleTypesChange}>X</button>
+                                <img className='typeImgCreate' src={`typesLogos/${t}.png`}/>
+                                {t}
+                            </div>)}
+                        </div>
+                    </div>
+                </div>
+
+                <div className='CreateFinish'>
+                    <button className='CreateFinishBtn' type='submit'>Create</button>
+                </div>
+            </form>
+            <svg style={{position: 'absolute', height: 0, width: 0}}>
+                <filter id="blue-glow">
+                    <feFlood result="flood" flood-color="blue" flood-opacity="1"></feFlood>
+                    <feComposite in="flood" result="mask" in2="SourceGraphic" operator="in"></feComposite>
+                    <feMorphology in="mask" result="dilated" operator="dilate" radius="2"></feMorphology>
+                    <feGaussianBlur in="dilated" result="blurred" stdDeviation="5"></feGaussianBlur>
+                    <feMerge>
+                        <feMergeNode in="blurred"></feMergeNode>
+                        <feMergeNode in="SourceGraphic"></feMergeNode>
+                    </feMerge>
+                </filter>
+            </svg>
         </div>
     )
 }
 
-export function redirect(){
-
-}

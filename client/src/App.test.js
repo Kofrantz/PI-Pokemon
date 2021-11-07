@@ -1,7 +1,8 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, cleanup, fireEvent } from '@testing-library/react';
 import React from 'react';
-import { Route, BrowserRouter } from 'react-router-dom';
+import { Router, BrowserRouter } from 'react-router-dom';
 import App from './App.js';
+import {createMemoryHistory} from 'history';
 import Home from './components/Home.jsx'
 import Creation from './components/Creation.jsx'
 import About from './components/About.jsx'
@@ -15,49 +16,74 @@ import LandingPage from './components/LandingPage.jsx'
 
 //beforeEach(() => render(<BrowserRouter><Nav /></BrowserRouter>))
 
-import { Provider } from 'react-redux'
+import rootReducer from './reducer/reducer.js'
+import { connect, Provider } from 'react-redux'
 import configureStore from 'redux-mock-store'
+import { createStore } from 'redux';
 
-/* describe('With React Testing Library', () => {
+afterEach(cleanup)
 
-  it('Shows "Hello world!"', () => {
-    store = mockStore(initialState)
-    const { getByText } = render(<Provider store={store}><App /></Provider>)
+function renderWithRedux(
+  ui,
+  {initialState, store = createStore(rootReducer, initialState)} = {}
+){
+  const history = createMemoryHistory()
+  return {
+    ...render(
+      <Router history={history}>
+        <Provider store={store}>{ui}</Provider>
+      </Router>
+    )
+  }
+}
+describe('Front End Tests:', () => {
+  console.log('IMPORTANTE: Comentar dispatchs dentro de useEffects para que no se ejecuten')
+  let getByTestId = null
+  let getByText = null
+  beforeEach(() => {
+    const scrn = renderWithRedux(<App/>)
+    getByTestId = scrn.getByTestId
+    getByText = scrn.getByText
+  }) 
 
-    expect(getByText('Hello Worldd!')).not.toBeNull()
-  })
-}) */
+  describe('Landing Page', () => {
 
-describe('App Routes', () => {
-  const initialState = {output:10}
-  const mockStore = configureStore()
-  let store,wrapper
-
-  beforeAll(() => {
-    const component = render(<BrowserRouter><App/></BrowserRouter>);
-    pathMap = component.find(Route).reduce((pathMap, route) => {
-      const routeProps = route.props();
-      pathMap[routeProps.path] = routeProps.component;
-        return pathMap;
-      }, {});
-      console.log(pathMap)
+    it(`La ruta '/' debe comenzar en la LandingPage`, () => {
+      expect(getByTestId('empezar')).toHaveTextContent('Empezar')
     })
-    
-    it('Deberia renderizar Home en la ruta /home', () => {
-    const { getByText } = render(<Provider store={store}><App /></Provider>)
-    store = mockStore(initialState)
-    expect(getByText('Hello World!')).not.toBeNull()
-    //expect(pathMap['/home']).toBe(Home)
-  })
-})
-describe('NavBar test', () => {
+    it('El boton Empezar debe redirigir a /home', () => {
+      fireEvent.click(getByTestId('empezar'))
+      expect(getByText('Cargando...')).toBeInTheDocument()
+    })
+  }) 
+  describe('Home Page', () => {
+    beforeEach(() => {fireEvent.click(getByTestId('empezar'))})
+    it(`El componente home se debe renderizarr en la ruta '/home'`, () => {
+      expect(getByText('Cargando...')).toBeInTheDocument()
+    })
+    it(`El boton Crear Pokemon debe redirigir a /create`, () => {
+      fireEvent.click(getByText('+ Crear Pokemon'))
+      expect(getByText('Create')).toBeInTheDocument()
+    })
+  }) 
+  describe('About Page', () => {
+    beforeEach(() => {fireEvent.click(getByTestId('empezar'))})
+    it(`El componente About se debe renderizarr en la ruta '/about'`, () => {
+      fireEvent.click(getByTestId('About'))
+      expect(getByText('About Me')).toBeInTheDocument()
+    })
+  }) 
 
-  xit('Debe tener un titulo', () => {
-    expect(screen.queryByText(/pikaboss/i)).toBeInTheDocument()
-  })
-  xit('Debe tener un input de busqueda', () => {
-    expect(screen.queryByText(/pikaboss/i)).toBeInTheDocument()
-  })
+  
+  describe('NavBar test', () => {
+    beforeEach(() => {fireEvent.click(getByTestId('empezar'))})
+    it('Debe tener un titulo', () => {
+      expect(getByText('PikaBoss')).toBeInTheDocument()
+    })
+    it('Debe tener un input de busqueda', () => {
+      expect(getByTestId('searchBar')).toBeInTheDocument()
+    })
+  }) 
 })
 
 

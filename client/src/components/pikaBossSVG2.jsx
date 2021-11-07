@@ -6,7 +6,7 @@ export default function PikaBossSvg2(props) {
     const [aboutInv, setAboutInv] = React.useState(false)
     const history = useHistory()
 
-    React.useEffect(() => setAboutInv(true), [])
+    React.useEffect(() => setTimeout(() => setAboutInv(true), 100), [])
     function handleClick(e) {
         if(e.target.value === 'false') {
             setAboutInv(false)
@@ -28,7 +28,7 @@ export default function PikaBossSvg2(props) {
             <div id="circleShadow" style={aboutInv ? {bottom: '0'} : {bottom: '-300px'}}/>
             <svg
                 id='pikaBossSvg2'
-                style={aboutInv ? {bottom: '0'} : {bottom: '-300px'}}
+                style={aboutInv ? {bottom: '10'} : {bottom: '-300px'}}
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 572.02 952.37"
                 {...props}

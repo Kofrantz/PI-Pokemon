@@ -9,6 +9,8 @@ export const CHANGE_FILTER = 'CHANGE_FILTER'
 export const CHANGE_ORDER = 'CHANGE_ORDER'
 export const GET_POKEMON_BY_NAME = 'GET_POKEMON_BY_NAME'
 export const CREATE_POKEMON = 'CREATE_POKEMON'
+export const ABOUT_MSG = 'ABOUT_MSG'
+export const MENU = 'MENU'
 
 /* export function getPokemons(){
     return async function (dispatch) {
@@ -90,4 +92,15 @@ export function createPokemon(details, history){
         })  
     }
 }
+export function aboutMsgFalse(){
+    return(dispatch) => {
+        dispatch({type: ABOUT_MSG, payload: ''})
+    }
+}
+export function toogleMenu(){
+    return(dispatch) => {
+        dispatch({type: MENU, payload: ''})
+    }
+}
+
 

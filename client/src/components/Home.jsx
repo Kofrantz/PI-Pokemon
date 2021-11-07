@@ -2,27 +2,31 @@ import Nav from "./Nav";
 import Cards from "./Cards";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { getPokemons, getTypes } from "../reducer/actions";
+import { aboutMsgFalse, getPokemons, getTypes } from "../reducer/actions";
 import PikaBossSvg2 from "./pikaBossSVG2";
+import Footer from "./Footer";
 
 export default function Home(){
-    const pokemons = useSelector((state) => state.pokemons)
+    const {pokemons, types, aboutMsg} = useSelector((state) => state)
     const [aboutInv, setAboutInv] = useState(false)
     const dispatch = useDispatch()
     
     function changeAbout(e){
         setAboutInv(e)
+        dispatch(aboutMsgFalse())
     }
     useEffect(() => {
-        if(!pokemons.length)dispatch(getPokemons())
-        setTimeout(() => changeAbout(true), 10000)
+        if(!types.length) dispatch(getTypes())
+        if(!pokemons.length) dispatch(getPokemons())
+        aboutMsg && setTimeout(() => changeAbout(true), 10000) 
     }, [])
 
     return (
-        <div className='home'>
+        <div className='home' >
             <Nav/>
-            <Cards/>
+            <Cards data-testid='cardsPage'/>
             {aboutInv && <PikaBossSvg2 changeAbout={changeAbout} aboutInv={aboutInv}/>}
+            <Footer/>
         </div>
     )
 }

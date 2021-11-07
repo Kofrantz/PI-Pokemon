@@ -3,10 +3,21 @@ import * as React from "react"
 export default function PikaBossSvg(props) {
   return (
     <svg
+      className="pikaBossImg"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 761.09 544.52"
       {...props}
     >
+      <filter id="blue-glow">
+                        <feFlood result="flood" flood-color="blue" flood-opacity="1"></feFlood>
+                        <feComposite in="flood" result="mask" in2="SourceGraphic" operator="in"></feComposite>
+                        <feMorphology in="mask" result="dilated" operator="dilate" radius="2"></feMorphology>
+                        <feGaussianBlur in="dilated" result="blurred" stdDeviation="5"></feGaussianBlur>
+                        <feMerge>
+                            <feMergeNode in="blurred"></feMergeNode>
+                            <feMergeNode in="SourceGraphic"></feMergeNode>
+                        </feMerge>
+      </filter>
       <style>
         {
           ".prefix__st0{fill:#ffcd25}.prefix__st1{fill:#605740}.prefix__st2{fill:#ff1f01}.prefix__st3{fill:#fff}.prefix__st3,.prefix__st4{opacity:.2}.prefix__st5,.prefix__st6,.prefix__st7,.prefix__st8{fill:none;stroke-miterlimit:10}.prefix__st5{stroke:#fff;stroke-width:7;stroke-linecap:round}.prefix__st6,.prefix__st7,.prefix__st8{stroke:#000;stroke-width:6}.prefix__st7,.prefix__st8{stroke-linecap:round}.prefix__st8{stroke-width:3}"

@@ -1,0 +1,18 @@
+.filters{
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+}
+.typeFil{
+    margin: 5px;
+    transition: 0.2s;
+}
+.typeFil:hover {
+    transform: scale(1.1)
+}
+.typeFilList{
+    margin: 10px 0;
+}
+.filtrarTipo{
+    margin: 10px 0;
+}

@@ -1,4 +1,4 @@
--Hacer tests
+#Hacer tests 
 -Filtro my pokemons
 -About me
 -no se repita la invitacion a aboutme
@@ -10,3 +10,6 @@
 -cambiar pantalla de carga
 -not found
 -PUSHEAR ALGO
+-Footer
+-bug a veces la imagen no aparece cuando la traigo de la bdd
+-delete pokemon

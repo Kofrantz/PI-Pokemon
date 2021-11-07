@@ -7,9 +7,12 @@
     align-content: flex-end;
     height: 70px;
 }
-.searchBar{
+.searchBar.normal{
     display: flex;
     align-items: center;
+}
+.searchBar.movil{
+    display: none;
 }
 .searchBar input{
     margin: 0 5px;
@@ -18,11 +21,27 @@
     border-style: solid;
     border-width: 0 0 3px 0;
     outline: none;
+    transition: 0.2s;
 }
 .searchBar input::placeholder{
-    color: #fff;
+    color: rgba(255, 255, 255, 0.5);
 }
-
+.searchBar input:focus{
+    filter: url(#blue-glow)
+}
+.searchBtn{
+    padding: 5px;
+    border-radius: 5px;
+    background-color:rgb(93, 93, 93);
+    color:white;
+    border: none;
+    transition: 0.2s;
+}
+.searchBtn:hover{
+    filter: url(#blue-glow);
+    cursor: pointer;
+    transform: scale(1.1);
+}
 .titleHome{
     display: flex;
     flex-direction: row;
@@ -37,23 +56,84 @@
     padding: 0;
     font-weight: bold;
 }
-.pikaBossSvg{
+.pikaBossImg{
     height: 100%;
     width: 60px;
-    filter: url(#white-glow);
+    margin-top: 10px;
+    filter: url(#blue-glow);
 }
-.create{
+.create.normal{
     display: flex;
     justify-content: center;
     align-items: center;
     width: 300px;
     font-size: 24px;
 }
+.create.movil{
+    display: none;
+    width: 100%;
+}
 .createBtn{
-    width: 250px;
+    width: 100%;
     font-size: 24px;
     border-radius: 5px;
-    background-color:blue;
+    background-color:rgb(93, 93, 93);
     color:white;
     border: none;
+    transition: 0.2s;
+}
+#txtCrear{
+    margin: 0;
+}
+#txtCrear:hover{
+    filter: url(#blue-glow);
+}
+.createBtn:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+}
+.menu{
+    display: none;
+    outline: none;
+    border: none;
+    height: 30px;
+    width: 30px;
+    margin-top: 10px;
+    background: repeating-linear-gradient(rgb(192, 192, 192) 0px 4px, transparent 4px 11px);
+}
+@media only screen and (max-width: 775px) {
+    .searchBar.normal{
+        display: none;
+    }
+    .searchBar.movil{
+        display: grid;
+        align-items: center;
+        grid-template-rows: auto auto;
+        grid-template-columns: auto auto;
+    }
+    .searchBar.movil h3{
+        grid-column: 1 / 3;
+    }
+    .searchBar.movil input{
+        width: 130px;
+    }
+    .create.normal{
+        display: none;
+    }
+    .create.movil{
+        display: flex;
+    }
+    .menu{
+        display: block;
+        position: absolute;
+        left: 10px;
+        top: 10px;
+    }
+    .nav{
+        z-index: 1000;
+        top: 0;
+        width: 100%;
+        position: fixed;
+        justify-content: center;
+    }
 }
