@@ -1,9 +1,11 @@
 import './styles/About.css'
 import Footer from './Footer'
 import { ReturnBtn } from './NotFound'
+import brickwall from '../multimedia/brickWall.jpg'
 
 export default function About(props){
     return(<div className="About">
+        <img className="brickwall" src={brickwall}/>
         <ReturnBtn/>
         <h1 className='aboutTitle'>About Me</h1>
         <div style={{display: 'flex', justifyContent: 'flex-start', flexDirection: 'row'}}>

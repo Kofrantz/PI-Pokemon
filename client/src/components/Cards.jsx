@@ -148,4 +148,3 @@ function newOrdArray(n){
 }
 
 const capitalize = (str) => str[0].toUpperCase()+str.slice(1) 
-const limitCaracters = (str) => str.length > 14 ? str.slice(0, 11)+'...' : str
