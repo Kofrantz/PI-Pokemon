@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 export const GET_POKEMONS = 'GET_POKEMONS'
+export const ADD_POKEMONS = 'ADD_POKEMONS'
 export const GET_DETAILS = 'GET_DETAILS'
 export const GET_TYPES = 'GET_TYPES'
 export const CLEAR_DETAILS = 'CLEAR_DETAILS'
@@ -11,6 +12,8 @@ export const GET_POKEMON_BY_NAME = 'GET_POKEMON_BY_NAME'
 export const CREATE_POKEMON = 'CREATE_POKEMON'
 export const ABOUT_MSG = 'ABOUT_MSG'
 export const MENU = 'MENU'
+export const TOT = 'TOT'
+export const DELETE_POKEMON = 'DELETE_POKEMON'
 
 /* export function getPokemons(){
     return async function (dispatch) {
@@ -19,13 +22,18 @@ export const MENU = 'MENU'
     }
 } */
 
-export function getPokemons(){
+export function getPokemons(packs=1){
     return function (dispatch) {
-        return fetch('http://localhost:3001/pokemons')
+        return fetch('http://localhost:3001/pokemons?packs='+packs)
         .then(r => r.json())
         .then(json => {
+            if(packs>1) {
+                return dispatch({type: ADD_POKEMONS, payload: json})
+            }
+            dispatch({type: TOT, payload: json.length})
             dispatch({type: GET_POKEMONS, payload: json})
         })
+        .catch(err => {console.log('fallo getPokemons; ', err)})
     }
 }
 
@@ -84,12 +92,11 @@ export function createPokemon(details, history){
     return (dispatch) => {
         axios.post('http://localhost:3001/pokemons', details)
         .then(r => {
+            if(r.data.error) return alert('Error: '+ r.data.error)
+            dispatch({type: TOT, payload: 1})
             dispatch({type: CREATE_POKEMON, payload: r.data})
             history.push('/home')
-        })
-        .catch(e => {
-            alert('Error: Ya creaste un pokemon con ese nombre, ponle uno distinto')
-        })  
+        }) 
     }
 }
 export function aboutMsgFalse(){
@@ -97,9 +104,21 @@ export function aboutMsgFalse(){
         dispatch({type: ABOUT_MSG, payload: ''})
     }
 }
-export function toogleMenu(){
+export function toogleMenu(bool = '!'){
     return(dispatch) => {
-        dispatch({type: MENU, payload: ''})
+        dispatch({type: MENU, payload: bool})
+    }
+}
+export function deletePokemon(id){
+    return async (dispatch) => {
+        const data = await axios.delete(`http://localhost:3001/pokemons/${id}`)
+        dispatch({type: TOT, payload: -1})
+        dispatch({type: DELETE_POKEMON, payload: data.data})
+    }
+}
+export function upTot(n=1){
+    return(dispatch) => {
+        dispatch({type: TOT, payload: n})
     }
 }
 

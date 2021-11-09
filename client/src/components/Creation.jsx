@@ -16,24 +16,27 @@ export default function Creation (){
         defense: '',
         speed: '',
         height: '',
-        weight: ''
+        weight: '',
+        urlImage: ''
     }) 
     const [typeState, setTypeState] = useState([])
     const [ preview, setPreview] = useState()
 
     useEffect(() => {
-        if (!input.image) {
+        if (!input.image && !input.urlImage) {
             setPreview(undefined)
             return
         }
-        const objectUrl = URL.createObjectURL(input.image)
-        setPreview(objectUrl)
+        if(input.image) {
+           const objectUrl = URL.createObjectURL(input.image) 
+           setPreview(objectUrl)
+        } 
     }, [input])
 
     function handleSubmit(e){
         e.preventDefault();
-        const {name, image, hp, attack, defense, speed, height, weight} = input
-        if(!name || !typeState.length || !image || !hp || !attack || !defense || !speed || !height || !weight){
+        const {name, image, hp, attack, defense, speed, height, weight, urlImage} = input
+        if(!(image || urlImage) || !name || !typeState.length || !hp || !attack || !defense || !speed || !height || !weight){
             return alert("Hay campos sin completar")
         } 
         const newPoke = {
@@ -50,7 +53,13 @@ export default function Creation (){
     }
     
     function handleChange(e){
-        setInput({...input, [e.target.id]: e.target.value})
+        if(e.target.id === 'urlImage') {
+            console.log('heree')
+            setInput({...input, [e.target.id]: e.target.value, image: undefined})
+            setPreview(e.target.value)
+        } else{
+            setInput({...input, [e.target.id]: e.target.value})
+        }
     }
 
     function handleTypesChange(e){
@@ -62,54 +71,54 @@ export default function Creation (){
         }
     }
     const onSelectFile = e => {
+        console.log(e.target.files[0])
         if (!e.target.files || e.target.files.length === 0) {
             setInput({...input, image: undefined})
             return
+        }else{
+            setInput({...input, image: e.target.files[0], urlImage: ''})
         }
-        setInput({...input, image: e.target.files[0]})
     }
     
     return (
         <div className='creation'>
-            <button onClick={() => {history.goBack()}}>Volver</button>
+            <button className='volver' onClick={() => {history.goBack()}}>⮌Regresar</button>
             <form onSubmit={handleSubmit} className='creationForm'>
                 <div className='inputImg'>
                     <h2>Apariencia</h2>
-                    {preview ? <img src={preview}/> : <div className='uploadimg'><p>No hay imagen</p></div>}
-                    <input type='file' id='image' onChange={onSelectFile}/>                    
+                    {preview ? <img alt='' src={preview}/> : <div className='uploadimg'><p>No hay imagen</p></div>}
+                    <input type='file' id='image' accept="image/*" onChange={onSelectFile}/>                    
+                    <label htmlFor='urlImage'>Seleccionar desde URL</label>
+                    <input name='urlImage' value={input.urlImage} id='urlImage' className='input' type='text' placeholder='URL' onChange={handleChange} autocomplete='on'/>
                 </div>
-
-                <div className='skillsAndTypes'>
-                    <div className='inputSkills'>
-                        <h2>Habilidades</h2>
-                        <input value={input.name} id='name' className='input' type='text' placeholder='Nombre' onChange={handleChange} autocomplete='on'/>
-                        <input value={input.attack} id='attack' className='input' type='text' placeholder='Ataque' onChange={handleChange} autocomplete='on'/>
-                        <input value={input.defense} id='defense' className='input' type='text' placeholder='Defensa' onChange={handleChange} autocomplete='on'/>
-                        <input value={input.speed} id='speed' className='input' type='text' placeholder='Velocidad' onChange={handleChange} autocomplete='on'/>
-                        <input value={input.hp} id='hp' className='input' type='text' placeholder='HP' onChange={handleChange} autocomplete='on'/>
-                        <input value={input.height} id='height' className='input' type='text' placeholder='Altura' onChange={handleChange} autocomplete='on'/>
-                        <input value={input.weight} id='weight' className='input' type='text' placeholder='Peso' onChange={handleChange} autocomplete='on'/>
-                    </div>
-                    <div className='inputTypes'>
-                        <h2>Tipo</h2>
-                        <label for='Tipo'>Elegir tipos </label>
-                        <select name='Tipo' value={'-Tipo-'} onChange={handleTypesChange}>
-                            <option value='-Tipo-' disabled>-Tipo-</option>
-                            {types.map(t => !typeState.find(x => x === t) ? <option value={t}>{t}</option> : null)}
-                        </select>
-                        <div className='typesSelGroup'>
-                        {typeState.map(t => 
-                            <div className='typeSel'>
-                                <button type="button" value={t} onClick={handleTypesChange}>X</button>
-                                <img className='typeImgCreate' src={`typesLogos/${t}.png`}/>
-                                {t}
-                            </div>)}
-                        </div>
+                <div className='inputSkills'>
+                    <h2>Habilidades</h2>
+                    <input value={input.name} id='name' className='input' type='text' placeholder='Nombre' onChange={handleChange} autocomplete='on'/>
+                    <input value={input.attack} id='attack' className='input' type='text' placeholder='Ataque' onChange={handleChange} autocomplete='on'/>
+                    <input value={input.defense} id='defense' className='input' type='text' placeholder='Defensa' onChange={handleChange} autocomplete='on'/>
+                    <input value={input.speed} id='speed' className='input' type='text' placeholder='Velocidad' onChange={handleChange} autocomplete='on'/>
+                    <input value={input.hp} id='hp' className='input' type='text' placeholder='HP' onChange={handleChange} autocomplete='on'/>
+                    <input value={input.height} id='height' className='input' type='text' placeholder='Altura' onChange={handleChange} autocomplete='on'/>
+                    <input value={input.weight} id='weight' className='input' type='text' placeholder='Peso' onChange={handleChange} autocomplete='on'/>
+                </div>
+                <div className='inputTypes'>
+                    <h2>Tipo</h2>
+                    <label htmlFor='Tipo'>Elegir tipos </label>
+                    <select name='Tipo' value={'-Tipo-'} onChange={handleTypesChange}>
+                        <option value='-Tipo-' disabled>-Tipo-</option>
+                        {types.map(t => !typeState.find(x => x === t) ? <option value={t}>{t}</option> : null)}
+                    </select>
+                    <div className='typesSelGroup'>
+                    {typeState.map(t => 
+                        <div className='typeSel'>
+                            <button type="button" value={t} onClick={handleTypesChange}>X</button>
+                            <img alt='' className='typeImgCreate' src={`typesLogos/${t}.png`}/>
+                            {t}
+                        </div>)}
                     </div>
                 </div>
-
                 <div className='CreateFinish'>
-                    <button className='CreateFinishBtn' type='submit'>Create</button>
+                    <button className='CreateFinishBtn' type='submit'>Crear Pokemon</button>
                 </div>
             </form>
             <svg style={{position: 'absolute', height: 0, width: 0}}>

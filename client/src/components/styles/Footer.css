@@ -33,8 +33,18 @@
 }
 .routes a{
     margin: 5px;
+    width: 80px;
+    height: 25px;
+    background-color: transparent;
+    text-align: center;
+    transition: 0.2s;
+}
+.routes a:hover{
+    background-color: rgb(56,56,56);
 }
 .routesTitle{
     margin: 5px;
     font-weight: bold;
+    width: 80px;
+    text-align: center;
 }

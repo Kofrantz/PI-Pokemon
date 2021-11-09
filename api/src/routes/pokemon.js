@@ -3,7 +3,7 @@ const router = require('express').Router();
 const {Pokemons, Types} = require('../db');
 
 router.get('/', async (req, res) => {
-    const {name} = req.query
+    const {name, packs} = req.query
     if(name){
         const dataApi = axios.get(`https://pokeapi.co/api/v2/pokemon/${name.toLowerCase()}`).catch(r => r.status)
         const dataDb = Pokemons.findOne({where: {name: name}, include: Types}).catch(r => console.log(r))
@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
             res.send(err.message)
         })
     }else{
-        const pokeNamesApi = axios.get('https://pokeapi.co/api/v2/pokemon?offset=0&limit=40')
+        const pokeNamesApi = axios.get(`https://pokeapi.co/api/v2/pokemon?offset=${(packs-1)*40}&limit=40`)
         const pokeNamesDB = Pokemons.findAll({include: {model: Types}})
         let pokeDataApi, pokeDataDB;
         //const page1 = await axios.get('https://pokeapi.co/api/v2/pokemon')
@@ -34,7 +34,7 @@ router.get('/', async (req, res) => {
         })
         .then((r) => {
             pokeDataApi = r?.map(p => p.data)
-            return res.status(200).json(pokeDataApi.concat(pokeDataDB).map(p => cleanPokeInfo(p)))
+            return res.status(200).json(pokeDataApi.concat(packs>1 ? [] : pokeDataDB).map(p => cleanPokeInfo(p)))
         })
         .catch((err) => {
             res.send(err.message)
@@ -57,17 +57,13 @@ router.get('/:id', async (req, res) => {
     return res.status(404).json({error: 'no se encontro ningun pokemon existente o creado que contenga esa id'})
 })
 
-router.put('/', async (req, res) => {
-    res.send('soy put pokemon')
-})
-
 router.post('/', async (req, res) => {
     const exist = await Pokemons.findOne({where: {name: req.body?.name.toLowerCase()}})
-    if(exist) return res.status(400).json({error: 'ya existe un pokemon con ese nombre'})
-
+    if(exist) return res.status(200).json({error: 'ya existe un pokemon con ese nombre'})
+    
     try{
         let newPoke = await Pokemons.create({...req.body, name: req.body.name.toLowerCase()})
-        
+        console.log()
         Promise.all(req.body.types.map(t => Types.findOne({where: {name: t}})))
         .then((data) => {
             newPoke.addTypes(data)
@@ -79,15 +75,18 @@ router.post('/', async (req, res) => {
             return res.status(200).json(resPoke)
         })
     }catch(err){
-        return res.status(400).json({error: 'No pudo crearse tu pokemon'})
+        return res.status(200).json({error: 'No pudo crearse tu pokemon'})
     }
 })
 
 router.delete('/:id', async (req, res) => {
     const {id} = req.params
     try{
-        const toDel = Pokemons.destroy({where: {id: id}})
-        return res.send(toDel)
+        const dbId = await Pokemons.findByPk(id, {include: Types})
+        if(dbId)  await Pokemons.destroy({where: {id: dbId.id}})
+        await Pokemons.destroy({where: {id: id}})
+        console.log(dbId)
+        return res.send(dbId)
     }catch(err){
         return res.status(400).json({Error: 'No se pudo eliminar'})
     }
@@ -99,11 +98,11 @@ function cleanPokeInfo(p){
         id: p.id,
         name: p.name,
         image: p.image || p.sprites?.other?.['official-artwork'].front_default,
-        types: p.Types?.map(p => p.name) || p.types.map(p => p.type.name),
-        hp: p.hp || stats.find(s => s.name === 'hp').val,
-        attack: p.attack || stats.find(s => s.name === 'attack').val,
-        defense: p.defense || stats.find(s => s.name === 'defense').val,
-        speed: p.speed || stats.find(s => s.name === 'speed').val,
+        types: p.Types?.map(p => p.name) || p.types?.map(p => p.type.name),
+        hp: p.hp || stats?.find(s => s.name === 'hp').val,
+        attack: p.attack || stats?.find(s => s.name === 'attack').val,
+        defense: p.defense || stats?.find(s => s.name === 'defense').val,
+        speed: p.speed || stats?.find(s => s.name === 'speed').val,
         weight: p.weight,
         height: p.height,
         origin: !stats ? 'My' : 'Original'

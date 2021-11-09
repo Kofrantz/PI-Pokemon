@@ -7,13 +7,14 @@ export default function PikaBossSvg2(props) {
     const history = useHistory()
 
     React.useEffect(() => setTimeout(() => setAboutInv(true), 100), [])
+    
     function handleClick(e) {
         if(e.target.value === 'false') {
             setAboutInv(false)
         }else{
             history.replace('/about')
         }
-        setTimeout(() => props.changeAbout(false), 500)
+        setTimeout(() => props.changeabout(false), 500)
     }
     return (
         <div id="aboutInv" >
@@ -31,7 +32,6 @@ export default function PikaBossSvg2(props) {
                 style={aboutInv ? {bottom: '10'} : {bottom: '-300px'}}
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 572.02 952.37"
-                {...props}
                 >
                 <filter id="white-glow">
                 <feFlood result="flood" flood-color="blue" flood-opacity="1"></feFlood>

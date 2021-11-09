@@ -1,11 +1,11 @@
 .base{
+    position: relative;
     margin: 50px auto;
     width: 314px;
     height: 314px;
     border-radius: 50%;
     background-color: black;
     animation: rotate 2s linear infinite;
-    /* transform: rotate(-45deg); */
 }
 @keyframes rotate {
     from{

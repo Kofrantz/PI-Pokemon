@@ -7,7 +7,7 @@ export default function Footer(){
             <div className="redes">
                 <span className="redesTitle">Contact Me</span>
                 <a href='https://www.linkedin.com/in/franco-alfano-4a6a7b216/'>
-                    <img className='inLogo' src="Logos/LinkedIn.png"/>
+                    <img alt='' className='inLogo' src="Logos/LinkedIn.png"/>
                 </a>
             </div>
             <div className="routes">

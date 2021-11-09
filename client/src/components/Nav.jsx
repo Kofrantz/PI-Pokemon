@@ -19,7 +19,7 @@ export default function Nav(){
             <button className='menu' onClick={handleMenu}></button>
             <Link exact to='/home'>
                 <div className='titleHome'>
-                    <img src={pikaBossLogo} className='pikaBossImg'/>
+                    <img alt=''  src={pikaBossLogo} className='pikaBossImg'/>
                     <div className='titleH'>PikaBoss</div>
                 </div>
             </Link>
@@ -55,6 +55,7 @@ export default function Nav(){
 export function SearchBar(props){
     const [input, setInput] = useState('')
     const history = useHistory()
+    const dispatch = useDispatch()
 
     function handleChange(e){
         setInput(e.target.value)
@@ -62,6 +63,7 @@ export function SearchBar(props){
 
     function handleSubmit(e){
         e.preventDefault()
+        dispatch(toogleMenu(false))
         history.replace('/home/'+input)
     }
     return (
@@ -75,10 +77,11 @@ export function SearchBar(props){
     )
 }
 export function CreateBtn(props){
+    const dispatch = useDispatch()
     return (
         <div className={'create '+props.class}>
             <Link exact to='/create'>
-                <button className='createBtn'><p id='txtCrear'>+ Crear Pokemon</p></button>
+                <button onClick={()=>{dispatch(toogleMenu(false))}} className='createBtn'><p id='txtCrear'>+ Crear Pokemon</p></button>
             </Link>
         </div>
     )

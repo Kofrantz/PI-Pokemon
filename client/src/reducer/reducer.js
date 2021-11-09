@@ -1,5 +1,6 @@
 import {GET_DETAILS, 
-    GET_POKEMONS, 
+    GET_POKEMONS,
+    ADD_POKEMONS, 
     GET_TYPES, 
     CLEAR_DETAILS,
     GET_POKEMON_BY_NAME, 
@@ -8,7 +9,9 @@ import {GET_DETAILS,
     CHANGE_ORDER,
     CREATE_POKEMON,
     ABOUT_MSG,
-    MENU} from "./actions"
+    MENU,
+    TOT,
+    DELETE_POKEMON} from "./actions"
 
 const initialState = {
     pokemons: [],
@@ -18,7 +21,8 @@ const initialState = {
     filters: {typeFilter: [], originFilter: 'All'},
     order: 'A - Z',
     aboutMsg: true, 
-    menu: false
+    menu: false,
+    tot: 0
 }
 
 function rootReducer(state=initialState, action){
@@ -27,6 +31,12 @@ function rootReducer(state=initialState, action){
             return {
                 ...state, 
                 pokemons: action.payload
+            }
+        case ADD_POKEMONS:
+            const newGroup = state.pokemons.concat(action.payload)
+            return {
+                ...state, 
+                pokemons: newGroup
             }
         case GET_DETAILS:
             return {
@@ -63,6 +73,7 @@ function rootReducer(state=initialState, action){
             return {
                 ...state, 
                 order: action.payload,
+                page: 1
             }
         case CREATE_POKEMON:
             return {
@@ -77,8 +88,20 @@ function rootReducer(state=initialState, action){
         case MENU:
             return {
                 ...state, 
-                menu: !state.menu
+                menu: action.payload === '!' ? !state.menu : action.payload
             }
+        case TOT:
+            return {
+                ...state, 
+                tot: state.tot + action.payload
+            }
+        case DELETE_POKEMON:
+            console.log(action.payload)
+            return {
+                ...state, 
+                pokemons: state.pokemons.filter(x => x.id !== action.payload.id)
+            }
+        
         default:
             return state
     }

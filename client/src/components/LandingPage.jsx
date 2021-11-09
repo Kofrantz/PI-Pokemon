@@ -9,8 +9,10 @@ export default function LandingPage(){
     const dispatch = useDispatch()
     return(
         <div className="lp">
+            <div className="bgGrad"/>
+            <div className="bgBlack"/>
             <h1 className='titleLp'>PikaBoss</h1>
-            <img className="bg" src={bg}/>
+            <img alt='' className="bg" src={bg}/>
             <div className='ray'>
                 <div className='ray2'></div>
             </div>
@@ -18,7 +20,7 @@ export default function LandingPage(){
             <div className='infoDivContainer'>
                 <div className='space'></div>
                 <div className="infoDiv">
-                    <p className='infoDivP'>Busca informacion de tus Pokemons favoritos o crea nuevos</p>
+                    <p className='infoDivP'>Busca información de tus Pokemons favoritos o crea nuevos Pokemons</p>
                     <NavLink exact to='/home'>
                         <button data-testid='empezar' className='btnEmpezar' 
                         OnClick={() => dispatch(getPokemons())}>

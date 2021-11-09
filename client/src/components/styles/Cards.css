@@ -23,27 +23,53 @@ a{
 }
 .cardImg{
     width: 100%;
-    overflow: hidden;
+    height: 200px;
+    object-fit: cover;
 }
 .name{
     font-size: 24px;
     font-weight: bold;
+    display:inline-block;
+    white-space: nowrap;
+    width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .pages{
     display: flex;
     justify-content: center;
     margin: 30px 0 40px 0;
 }
-.pages button{
+.page{
     font-size: 22px;
     height: 30px;
-    width: 30px;
+    min-width: 30px;
+    text-align: center;
     color: #fff;
     background-color: rgba(124, 124, 124, 0.609);
     margin: 2px;
     border: none;
 }
-.pages button:hover{
+.page.btn:hover{
+    filter: url(#blue-glow);
+    transform: scale(1.1)
+}
+.page.disabled{
+    opacity: 50%;
+}
+.loadMore{
+    width: 50%;
+    font-size: 24px;
+    border: none;
+    border-radius: 15px;
+    margin: 0 auto 30px;
+    background-color: rgba(124, 124, 124, 0.609);
+}
+.loadMore:hover{
+    filter: url(#blue-glow);
+    transform: scale(1.1)
+}
+.loadMore:active{
     filter: url(#blue-glow);
     transform: scale(1.1)
 }
@@ -74,7 +100,20 @@ a{
     background-color: rgb(56, 56, 56);
 }
 .footerFix{
-    height: 100vh;
+    height: calc(100% - 500px);
+}
+.blurScreen{
+    position: fixed;
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+}
+.blur{
+    filter: blur(5px);
+}
+.flag{
+    background-color: rgba(0, 0, 0, 0.541);
+    filter: url(#blue-glow);
 }
 
 @media only screen and (max-width: 775px) {
@@ -116,4 +155,31 @@ a{
         height: 280px;
         /* transform: scale(0.75); */
     }
+    .cardImg{
+        width: 150px;
+        height: 150px;
+    }
+    .name{
+        font-size: 24px;
+        font-weight: bold;
+        display:inline-block;
+        white-space: nowrap;
+        width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }
+.loadCircle{
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgb(107, 179, 207);
+    border-color: transparent rgb(163, 205, 221) transparent rgb(163, 205, 221);
+    border-radius: 50%;
+    filter: url(#blue-glow);
+    animation: spin 1s linear infinite;
+}
+.loadCircleContainer{
+    display: flex;
+    justify-content: center;
+}
+@keyframes spin {from{transform: rotate(0)}to{transform: rotate(360deg)}}

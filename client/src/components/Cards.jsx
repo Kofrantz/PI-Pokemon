@@ -1,16 +1,16 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, NavLink } from 'react-router-dom';
-import { changePage } from '../reducer/actions';
+import { NavLink } from 'react-router-dom';
+import { changePage, getPokemons, toogleMenu, upTot } from '../reducer/actions';
 import Filter from './Filter';
 import Loading from './Loading';
 import Order from './Order';
 import NotFound from './NotFound';
 import './styles/Cards.css';
-import { useEffect, useState } from 'react';
 import { CreateBtn, SearchBar } from './Nav';
+import { useEffect, useState } from 'react';
 
 export default function Cards(){
-    const {pokemons,page,order,types,filters,menu} = useSelector((state) => state)
+    const {pokemons,page,order,types,filters,menu, tot} = useSelector((state) => state)
     const dispatch = useDispatch()
     
     const ordered = orderMachine(order, pokemons, types)
@@ -22,8 +22,17 @@ export default function Cards(){
         if (pag > Math.ceil(filtered.length/12) || pag < 1) return;
         dispatch(changePage(pag))
     }
+
+    function handleMore(){
+        const q = pokemons.filter(x => x.origin !== 'My').length
+        if(q === 0) return dispatch(getPokemons())
+        dispatch(upTot(40))
+        dispatch(getPokemons((q/40)+1))
+    }
+
     return(
-        !pokemons.length ? <Loading/> : <div className="cardsAndFilterContainer">
+        !pokemons.length ? <><div className="footerFix"><Loading/></div></> : <div className="cardsAndFilterContainer">
+            
             <div className="footerFix"/>
             <div className={!menu ? "filterAndOrderContainer" : "filterAndOrderContainerDeployed"}>
                 <CreateBtn class='movil'/>
@@ -31,18 +40,22 @@ export default function Cards(){
                 <Order/>
                 <Filter/>
             </div>
-            <div className="cardsContainer">
+            <div className={'cardsContainer'+(menu ? ' blur' : '')}>
+
+                {!pokeGroup.length ? null : <Paginado handlepage={handlePage} page={page} filtered={filtered}/>}
+
                 <div className='cards'>
-                    {!pokeGroup.length ? <NotFound/> : pokeGroup.map(p => 
+                    {menu && <div className="blurScreen" onClick={() =>{dispatch(toogleMenu(false))}}></div>}
+                    {!pokeGroup.length ? <NotFound ret={false}/> : pokeGroup.map(p => 
                         <NavLink to={`/home/${p.id}`} key={p.id}>
                             <div className='card'>
                                 <span className='name'>{capitalize(p.name)}</span>
-                                {p.image ? <img className='cardImg' src={p.image}/> : <p style={{fontSize: '48px'}}>?</p>}
+                                <img alt='' className='cardImg' src={p.image}/>
                                 <div className='types'>
                                     {p.types?.map(t => {
                                         return (
                                             <div key={t} className='type'>
-                                                <img className='typeImg' src={`typesLogos/${t}.png`}/>
+                                                <img alt='' className='typeImg' src={`typesLogos/${t}.png`}/>
                                                 <p >{capitalize(t)}</p>
                                             </div>
                                         )
@@ -53,15 +66,46 @@ export default function Cards(){
                     )}
                 </div>
                 
-                {!pokeGroup.length ? null : <div className='pages'>
-                    <button onClick={() => {handlePage(page-1)}}>{'<'}</button>
-                        {newOrdArray(Math.ceil(filtered.length/12)).map(p => 
-                            <button onClick={() => {handlePage(p)}}>{p}</button>)}
-                    <button onClick={() => {handlePage(page+1)}}>{'>'}</button>
-                </div>}
+                {!pokeGroup.length ? null : <Paginado handlepage={handlePage} page={page} filtered={filtered}/>}
+                
+                {pokemons.length === tot ? <button className='loadMore' onClick={handleMore}>Cargar Mas...</button> : <LoadCircle/>}
             </div>
         </div>
     )
+}
+function LoadCircle(){
+    const {pokemons} = useSelector((state) => state)
+    const dispatch = useDispatch()
+    return(
+        <div className='loadCircleContainer'>
+            <div className='loadCircle'></div>
+            {setTimeout(() => {<button onClick={() => {dispatch(upTot(pokemons.length))}}>cancelar</button>}, 10000)}
+        </div>
+    )
+}
+
+function Paginado({handlepage, page, filtered}){
+    const limit = 5
+    const totPages = Math.ceil(filtered.length/12)
+    const buttons = []
+    for (let i = -(limit-1)/2; i <= (limit-1)/2; i++){
+        if(page+i <= totPages && page+i > 0) buttons.push(page+i)
+    }
+
+    return(<>
+        <div className='pages'>
+            {page > 1 && <button className='page btn' onClick={() => {handlepage(page-1)}}>{'<'}</button>}
+            {!buttons.find(x=>x===1) && <button className='page btn' onClick={() => {handlepage(1)}}>{'1'}</button>}
+            {2 < buttons[0] && <div className='page disabled'>...</div>}
+            {buttons.map(p => 
+                <button key={p} 
+                className={`page ${page===p ? 'flag' : 'btn'}`} 
+                onClick={() => {handlepage(p)}}>{p}</button>)}
+            {totPages-1 > buttons[buttons.length-1] && <div className='page disabled'>...</div>}
+            {!buttons.find(x=>x===totPages) && <button className='page btn' onClick={() => {handlepage(totPages)}}>{totPages}</button>}
+            {page < totPages && <button className='page btn' onClick={() => {handlepage(page-1)}}>{'>'}</button>}
+        </div>
+    </>)
 }
 
 function orderMachine(order, pokemons, types){
@@ -104,3 +148,4 @@ function newOrdArray(n){
 }
 
 const capitalize = (str) => str[0].toUpperCase()+str.slice(1) 
+const limitCaracters = (str) => str.length > 14 ? str.slice(0, 11)+'...' : str

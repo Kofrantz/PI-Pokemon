@@ -2,8 +2,7 @@ body{
     background-color: rgb(44, 44, 44);
     color: white; 
 }
-body::after{
-    content: "";
+.bgGrad{
     background: linear-gradient(rgb(44, 44, 44) 40%, rgb(0, 0, 0));
     width: 100%;
     height: 100%;
@@ -50,7 +49,6 @@ body::after{
 }
 
 .electric{
-    bottom: 0px;
     position: absolute;
     height: 70px;
     width: 300px;
@@ -59,6 +57,7 @@ body::after{
     align-content: center;
     justify-content: center;
     transition: 0.1s;
+    transform: translateY(-70px);
 }
 .electric:hover{
     opacity: 100%;
@@ -124,6 +123,40 @@ body::after{
 .infoDivContainer{
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+.bgBlack{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    z-index:-5;
+}
+
+@media only screen and (max-width: 775px) {
+    .bgGrad{
+        width: 100%;
+    }
+    .infoDivContainer{
+        display: flex;
+        flex-wrap: wrap-reverse;
+        justify-content: space-evenly;
+    }
+    .bg{
+        width: 225px;
+        margin: 400px 90px;
+    }
+    .ray{
+        height: 250px;
+        width: 250px;
+        margin: 360px 60px;
+    }
+    .space{
+        display: none;
+    }
+    .bgBlack{
+        display: none;
+    }
 }
 
 @keyframes spin {

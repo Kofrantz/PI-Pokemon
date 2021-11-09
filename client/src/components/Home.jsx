@@ -25,7 +25,7 @@ export default function Home(){
         <div className='home' >
             <Nav/>
             <Cards data-testid='cardsPage'/>
-            {aboutInv && <PikaBossSvg2 changeAbout={changeAbout} aboutInv={aboutInv}/>}
+            {aboutInv && <PikaBossSvg2 changeabout={changeAbout} /* aboutInv={aboutInv} *//>}
             <Footer/>
         </div>
     )

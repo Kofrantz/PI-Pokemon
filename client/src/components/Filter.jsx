@@ -18,6 +18,7 @@ export default function Filter(){
     }, [originFilter])
 
     function handleTypesChange(e){
+        if(e.target.value === 'delAll') return setTypeFilter([])
         if(typeFilter.find(x => x === e.target.value)) {
             setTypeFilter(typeFilter.filter(x => x !== e.target.value)) 
         }else{
@@ -48,15 +49,22 @@ export default function Filter(){
                 Solo los Originales
             </label>
             <div className="filtrarTipo">
-                <label for='filtrarTipo'>Tipo </label>
+                <label htmlFor='filtrarTipo'>Tipo </label>
                 <select name='filtrarTipo' value={'-Tipo-'} onChange={handleTypesChange}>
                     <option value='-Tipo-' disabled>-Tipo-</option>
-                    {types.map(t => !typeFilter.find(x => x === t) ? <option value={t}>{t}</option> : null)}
+                    {types.map(t => !typeFilter.find(x => x === t) ? <option key={t} value={t}>{t}</option> : null)}
                 </select>
+                {typeFilter.length ? <button className='delAll' value='delAll' 
+                onClick={handleTypesChange}>🗑️Todos</button> : null}
             </div>
             <div className="typeFilList">
-                {typeFilter.map(t => <button type="button" className='typeFil' value={t} onClick={handleTypesChange}>{t}</button>)}
+                {typeFilter.map(t => 
+                    <button key={t} type="button" className='typeFil' value={t} onClick={handleTypesChange}
+                    style={{content:`${t}`}}>
+                        ✕ {capitalize(t)}
+                    </button>)}
             </div>
         </div>
     )
 }
+const capitalize = (str) => str[0].toUpperCase()+str.slice(1) 

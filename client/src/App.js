@@ -5,9 +5,7 @@ import Home from './components/Home';
 import Details from './components/Details';
 import Creation from './components/Creation';
 import About from './components/About';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { getTypes } from './reducer/actions';
+import { useSelector } from 'react-redux';
 
 function App() {
   const types = useSelector((state) => state.types)
